@@ -115,3 +115,26 @@ describe("POST /login", () => {
       });
   });
 });
+
+describe("DELETE /logout", () => {
+  test("responds with success when correct auth token in header", () => {
+    return request(app)
+      .delete("/user/logout")
+      .set("authorization", "bearer testtoken1")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.success).toBe(true);
+      });
+  });
+
+  test("responds with 401 status code for non existant token", () => {
+    return request(app)
+      .delete("/user/logout")
+      .set("authorization", "bearer testtoken123123")
+      .expect(401);
+  });
+
+  test("responds with 401 status code for no authorization header supplied", () => {
+    return request(app).delete("/user/logout").expect(401);
+  });
+});
