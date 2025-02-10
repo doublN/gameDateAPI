@@ -12,7 +12,7 @@ switch (environment) {
     database = "gamedate-local";
     break;
   default:
-    database = "gamedata-prod";
+    database = "gamedate-prod";
 }
 
 export const connection = await mysql.createConnection({
