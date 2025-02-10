@@ -11,7 +11,6 @@ export class LogoutUserController {
     try {
       if (bearer === "") {
         res.status(401).end();
-        throw new Error("Incorrect bearer token");
       }
 
       const result = await sessionService.deleteSession(bearer);
