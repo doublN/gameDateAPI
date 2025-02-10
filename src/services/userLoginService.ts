@@ -13,7 +13,7 @@ export class UserLoginService {
     if (user === null) {
       throw new Error("Cannot find user");
     }
-    console.log(user);
+
     const isVerified = await argon2.verify(user?.user.hashedPassword, password);
 
     if (!isVerified) {
