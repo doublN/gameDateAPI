@@ -5,7 +5,7 @@ import { connection } from "../../db/db";
 import { testSeed } from "../../db/testSeed";
 import { app } from "../..";
 
-beforeEach(async () => {
+beforeAll(async () => {
   await testSeed();
 });
 
@@ -15,7 +15,7 @@ afterAll(async () => {
 
 describe("POST /create", () => {
   test("new user is created and response with success = true", () => {
-    request(app)
+    return request(app)
       .post("/user/create")
       .send({
         username: "doubln",
@@ -29,7 +29,7 @@ describe("POST /create", () => {
   });
 
   test("new user failed to be created and response with success = false and error message", () => {
-    request(app)
+    return request(app)
       .post("/user/create")
       .send({
         username: "doubln",
