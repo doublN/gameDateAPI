@@ -58,3 +58,60 @@ describe("POST /create", () => {
       });
   });
 });
+
+describe("POST /login", () => {
+  test("responds with token when correct email and password supplied", () => {
+    return request(app)
+      .post("/user/login")
+      .send({
+        email: "nathan@test.com",
+        password: "password123",
+      })
+      .expect(200)
+      .then((response) => {
+        expect(response.body.token).toBeString();
+      });
+  });
+
+  test("responds with error object with incorrect password message when incorrect password is supplied", () => {
+    return request(app)
+      .post("/user/login")
+      .send({
+        email: "nathan@test.com",
+        password: "password122",
+      })
+      .expect(200)
+      .then((response) => {
+        expect(response.body.success).toBe(false);
+        expect(response.body.errors).toEqual(["Incorrect password"]);
+      });
+  });
+
+  test("responds with error object with cannot find user message when incorrect email is supplied", () => {
+    return request(app)
+      .post("/user/login")
+      .send({
+        email: "nia@test.com",
+        password: "password122",
+      })
+      .expect(200)
+      .then((response) => {
+        expect(response.body.success).toBe(false);
+        expect(response.body.errors).toEqual(["Cannot find user"]);
+      });
+  });
+
+  test("responds with error object with validation errors for missing request data", () => {
+    return request(app)
+      .post("/user/login")
+      .send({})
+      .expect(200)
+      .then((response) => {
+        expect(response.body.success).toBe(false);
+        expect(response.body.errors).toEqual([
+          "email is a required field",
+          "password is a required field",
+        ]);
+      });
+  });
+});
