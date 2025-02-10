@@ -14,6 +14,8 @@ const handleMySqlError = (error: any): string => {
     switch (error.code) {
       case "ER_DUP_ENTRY":
         return "This entry already exists";
+      case "ER_NO_SUCH_TABLE":
+        return "The table is missing";
       default: {
         console.log(error);
         return error.message;
