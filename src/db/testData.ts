@@ -19,10 +19,10 @@ export const testUsers = [
 export const testSessions = [
   {
     userId: 1,
-    token: crypto.randomUUID() as string,
+    token: "testtoken1",
   },
   {
     userId: 2,
-    token: crypto.randomUUID() as string,
+    token: "testtoken2",
   },
 ];
