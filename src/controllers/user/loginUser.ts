@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { object, string } from "yup";
-import { UserLoginService } from "../../services/userLoginService.js";
+import { UserService } from "../../services/userService.js";
 import { handleError } from "../../utils/error.js";
 
 export type loginUserRequest = {
@@ -11,7 +11,7 @@ export type loginUserRequest = {
 export class LoginUserContoller {
   async invoke(req: Request, res: Response) {
     const requestValidation = object({
-      email: string().required(),
+      email: string().email().required(),
       password: string().required(),
     });
 
@@ -20,7 +20,7 @@ export class LoginUserContoller {
         abortEarly: false,
       });
 
-      const userLoginService = new UserLoginService();
+      const userLoginService = new UserService();
 
       const token = await userLoginService.login(
         request.email,

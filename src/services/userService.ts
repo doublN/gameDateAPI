@@ -3,7 +3,7 @@ import { SessionModel } from "../models/session.js";
 import { UserRepository } from "../repositories/user.js";
 import argon2 from "argon2";
 
-export class UserLoginService {
+export class UserService {
   private readonly userRepository = new UserRepository();
   private readonly sessionFactory = new SessionFactory();
 
