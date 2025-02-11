@@ -1,4 +1,3 @@
-import argon2 from "argon2";
 import { query } from "./db";
 import { testSessions, testUsers } from "./testData";
 
@@ -12,7 +11,7 @@ export const testSeed = async () => {
     );
 
     await query(
-      "CREATE TABLE sessions (userId int unsigned NOT NULL, token varchar(255) NOT NULL, createdAt TIMESTAMP default CURRENT_TIMESTAMP, FOREIGN KEY (userId) REFERENCES users(id));"
+      "CREATE TABLE sessions (userId int unsigned NOT NULL, token varchar(255) NOT NULL, createdAt TIMESTAMP default CURRENT_TIMESTAMP, FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE);"
     );
 
     testUsers.map(async ({ username, email, password }) => {
