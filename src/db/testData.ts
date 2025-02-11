@@ -1,18 +1,20 @@
+import argon2 from "argon2";
+
 export const testUsers = [
   {
     username: "jerry1992",
     email: "jerry1992@gmail.com",
-    password: "password123",
+    password: await argon2.hash("password123"),
   },
   {
     username: "tom91",
     email: "tom91@gmail.com",
-    password: "password456",
+    password: await argon2.hash("password456"),
   },
   {
     username: "daniel01",
     email: "daniel01@gmail.com",
-    password: "password789",
+    password: await argon2.hash("password789"),
   },
 ];
 

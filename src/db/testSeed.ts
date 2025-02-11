@@ -16,11 +16,9 @@ export const testSeed = async () => {
     );
 
     testUsers.map(async ({ username, email, password }) => {
-      const hashedPassword = await argon2.hash(password);
-
       await query(
         "INSERT INTO users (username, email, hashedPassword) VALUES (?, ?, ?);",
-        [username, email, hashedPassword]
+        [username, email, password]
       );
     });
 
