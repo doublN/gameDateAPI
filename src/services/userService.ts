@@ -1,3 +1,4 @@
+import { query } from "../db/db.js";
 import { SessionFactory } from "../factories/session.js";
 import { SessionModel } from "../models/session.js";
 import { UserRepository } from "../repositories/user.js";
@@ -14,7 +15,7 @@ export class UserService {
       throw new Error("Cannot find user");
     }
 
-    const isVerified = await argon2.verify(user?.user.hashedPassword, password);
+    const isVerified = await argon2.verify(user.user.hashedPassword, password);
 
     if (!isVerified) {
       throw new Error("Incorrect password");
@@ -27,5 +28,23 @@ export class UserService {
     }
 
     throw new Error("Could not create session");
+  }
+
+  async deleteUser(email: string, password: string): Promise<boolean> {
+    const user = await this.userRepository.findByEmail(email);
+
+    if (user === null) {
+      throw new Error("Cannot find user");
+    }
+
+    const isVerified = await argon2.verify(user.user.hashedPassword, password);
+
+    if (!isVerified) {
+      throw new Error("Incorrect password");
+    }
+
+    await query(`DELETE FROM users WHERE email = ?`, [email]);
+
+    return true;
   }
 }
