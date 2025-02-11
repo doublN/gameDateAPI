@@ -30,8 +30,8 @@ export class LoginUserContoller {
       res.json({ token });
     } catch (error) {
       const response = handleError(error);
+      res.status(400);
       res.json(response);
-      res.status(400).end();
     }
   }
 }
