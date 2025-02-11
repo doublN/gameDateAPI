@@ -1,7 +1,7 @@
 import "jest-extended";
 import request from "supertest";
 import { describe, expect, test } from "@jest/globals";
-import { connection } from "../../db/db";
+import { connection, query } from "../../db/db";
 import { testSeed } from "../../db/testSeed";
 import { app } from "../..";
 
@@ -136,5 +136,67 @@ describe("DELETE /logout", () => {
 
   test("responds with 401 status code for no authorization header supplied", () => {
     return request(app).delete("/user/logout").expect(401);
+  });
+});
+
+describe("DELETE /delete", () => {
+  test("responds with 401 status code when incorrect auth token supplied", () => {
+    return request(app)
+      .delete("/user/delete")
+      .set("authorization", "bearer testtoken1123123")
+      .send({
+        email: "tom91@gmail.com",
+        password: "password456",
+      })
+      .expect(401);
+  });
+
+  test("responds with error object with cannot find user message when incorrect email is supplied", () => {
+    return request(app)
+      .delete("/user/delete")
+      .set("authorization", "bearer testtoken2")
+      .send({
+        email: "nia@test.com",
+        password: "password122",
+      })
+      .expect(400)
+      .then((response) => {
+        expect(response.body.success).toBe(false);
+        expect(response.body.errors).toEqual(["Cannot find user"]);
+      });
+  });
+
+  test("responds with errors when missing request body", () => {
+    return request(app)
+      .delete("/user/delete")
+      .set("authorization", "bearer testtoken2")
+      .send({})
+      .expect(400)
+      .then((response) => {
+        expect(response.body.success).toBe(false);
+        expect(response.body.errors).toEqual([
+          "email is a required field",
+          "password is a required field",
+        ]);
+      });
+  });
+
+  test("responds with success when correct auth token in header and correct email and password supplied", () => {
+    return request(app)
+      .delete("/user/delete")
+      .set("authorization", "bearer testtoken2")
+      .send({
+        email: "tom91@gmail.com",
+        password: "password456",
+      })
+      .expect(200)
+      .then((response) => {
+        expect(response.body.success).toBe(true);
+
+        return query(`SELECT token FROM sessions WHERE token = 'testtoken2'`);
+      })
+      .then(([result]) => {
+        expect(result).toEqual([]);
+      });
   });
 });
