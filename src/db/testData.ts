@@ -2,17 +2,17 @@ export const testUsers = [
   {
     username: "jerry1992",
     email: "jerry1992@gmail.com",
-    hashedPassword: "password123",
+    password: "password123",
   },
   {
     username: "tom91",
     email: "tom91@gmail.com",
-    hashedPassword: "password456",
+    password: "password456",
   },
   {
     username: "daniel01",
     email: "daniel01@gmail.com",
-    hashedPassword: "password789",
+    password: "password789",
   },
 ];
 

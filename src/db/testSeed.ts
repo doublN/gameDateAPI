@@ -1,3 +1,4 @@
+import argon2 from "argon2";
 import { query } from "./db";
 import { testSessions, testUsers } from "./testData";
 
@@ -14,7 +15,9 @@ export const testSeed = async () => {
       "CREATE TABLE sessions (userId int unsigned NOT NULL, token varchar(255) NOT NULL, createdAt TIMESTAMP default CURRENT_TIMESTAMP, FOREIGN KEY (userId) REFERENCES users(id));"
     );
 
-    testUsers.map(async ({ username, email, hashedPassword }) => {
+    testUsers.map(async ({ username, email, password }) => {
+      const hashedPassword = await argon2.hash(password);
+
       await query(
         "INSERT INTO users (username, email, hashedPassword) VALUES (?, ?, ?);",
         [username, email, hashedPassword]
