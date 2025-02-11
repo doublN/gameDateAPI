@@ -80,7 +80,7 @@ describe("POST /login", () => {
         email: "nathan@test.com",
         password: "password122",
       })
-      .expect(200)
+      .expect(400)
       .then((response) => {
         expect(response.body.success).toBe(false);
         expect(response.body.errors).toEqual(["Incorrect password"]);
@@ -94,7 +94,7 @@ describe("POST /login", () => {
         email: "nia@test.com",
         password: "password122",
       })
-      .expect(200)
+      .expect(400)
       .then((response) => {
         expect(response.body.success).toBe(false);
         expect(response.body.errors).toEqual(["Cannot find user"]);
@@ -105,7 +105,7 @@ describe("POST /login", () => {
     return request(app)
       .post("/user/login")
       .send({})
-      .expect(200)
+      .expect(400)
       .then((response) => {
         expect(response.body.success).toBe(false);
         expect(response.body.errors).toEqual([
