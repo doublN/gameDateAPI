@@ -1,6 +1,6 @@
 import mysql from "mysql2/promise";
 
-const environment = process.env.NODE_ENV || "production";
+const environment = process.env.NODE_ENV?.trim() || "production";
 
 let database = "";
 
