@@ -1,4 +1,3 @@
-import "jest-extended";
 import { describe, expect, test } from "@jest/globals";
 import { timeDifference } from "../utils/date.js";
 import { IncomingHttpHeaders } from "http";
@@ -20,8 +19,8 @@ describe("Date - timeDifference", () => {
     const result1 = timeDifference(date1, date2);
     const result2 = timeDifference(date1, date2, "minutes");
 
-    expect(result1).toBeNumber();
-    expect(result2).toBeNumber();
+    expect(typeof result1 === "number").toBe(true);
+    expect(typeof result2 === "number").toBe(true);
   });
 
   test("milliseconds difference", () => {
@@ -60,8 +59,8 @@ describe("Header - getBearer", () => {
     const result1 = getBearer(headers);
     const result2 = getBearer(noHeaders);
 
-    expect(result1).toBeString();
-    expect(result2).toBeString();
+    expect(typeof result1 === "string").toBe(true);
+    expect(typeof result2 === "string").toBe(true);
   });
 
   test("returns token", () => {
@@ -83,16 +82,15 @@ describe("Error - handleError", () => {
   });
 
   test("return error response", () => {
-    expect.assertions(4);
+    expect.assertions(3);
 
     return requestValidation
       .validate({}, { abortEarly: false })
       .catch((error) => {
         const errorResponse = handleError(error);
 
-        expect(errorResponse).toBeObject();
-        expect(errorResponse.errors).toBeArray();
-        expect(errorResponse.success).toBeBoolean();
+        expect(typeof errorResponse === "object").toBe(true);
+        expect(Array.isArray(errorResponse.errors)).toBe(true);
         expect(errorResponse.success).toBe(false);
       });
   });

@@ -14,7 +14,6 @@ const config: JestConfigWithTsJest = {
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",
   },
-  setupFilesAfterEnv: ["jest-extended/all"],
   preset: "ts-jest/presets/default-esm",
   modulePathIgnorePatterns: ["<rootDir>/node_modules/"],
 };

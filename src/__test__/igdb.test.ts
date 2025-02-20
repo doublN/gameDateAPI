@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-import "jest-extended";
 import { describe, expect, test } from "@jest/globals";
 import { credentials, fetchCredentials, getGamesBySearch } from "../igdb";
 
@@ -9,9 +8,9 @@ describe("fetch credentials", () => {
   test("correctly fetches credentials", async () => {
     await fetchCredentials();
 
-    expect(credentials.access_token).toBeString();
-    expect(credentials.expires_in).toBeNumber();
-    expect(credentials.token_type).toBeString();
+    expect(typeof credentials.access_token === "string").toBe(true);
+    expect(typeof credentials.expires_in === "number").toBe(true);
+    expect(typeof credentials.token_type === "string").toBe(true);
     expect(credentials.token_type).toBe("bearer");
   });
 });
@@ -20,7 +19,7 @@ describe("getGamesBySearch", () => {
   test("correctly fetches games", async () => {
     const games = await getGamesBySearch("avowed");
 
-    expect(games).toBeArray();
+    expect(Array.isArray(games)).toBe(true);
     expect(games[0]).toMatchObject({
       id: 135994,
       cover: {

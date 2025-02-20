@@ -1,4 +1,3 @@
-import "jest-extended";
 import request from "supertest";
 import { describe, expect, test } from "@jest/globals";
 import { connection, query } from "../../db/db";
@@ -69,7 +68,7 @@ describe("POST /login", () => {
       })
       .expect(200)
       .then((response) => {
-        expect(response.body.token).toBeString();
+        expect(typeof response.body.token === "string").toBe(true);
       });
   });
 
