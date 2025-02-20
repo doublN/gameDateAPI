@@ -14,13 +14,15 @@ const port = process.env.PORT ?? 3000;
 app.use("/user", userRouter);
 app.use("/game", gameRouter);
 
-app.listen(port, async () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port, async () => {
+    console.log(`[server]: Server is running at http://localhost:${port}`);
 
-  try {
-    await fetchCredentials();
-  } catch (error) {
-    console.log("error fetching credentials");
-    console.log(error);
-  }
-});
+    try {
+      await fetchCredentials();
+    } catch (error) {
+      console.log("error fetching credentials");
+      console.log(error);
+    }
+  });
+}
