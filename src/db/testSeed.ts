@@ -1,5 +1,5 @@
-import { query } from "./db";
-import { testSessions, testUsers } from "./testData";
+import { query } from "./db.js";
+import { testSessions, testUsers } from "./testData.js";
 
 export const testSeed = async () => {
   try {
@@ -14,14 +14,14 @@ export const testSeed = async () => {
       "CREATE TABLE sessions (userId int unsigned NOT NULL, token varchar(255) NOT NULL, createdAt TIMESTAMP default CURRENT_TIMESTAMP, FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE);"
     );
 
-    testUsers.map(async ({ username, email, password }) => {
+    testUsers.forEach(async ({ username, email, password }) => {
       await query(
         "INSERT INTO users (username, email, hashedPassword) VALUES (?, ?, ?);",
         [username, email, password]
       );
     });
 
-    testSessions.map(async ({ userId, token }) => {
+    testSessions.forEach(async ({ userId, token }) => {
       await query("INSERT INTO sessions (userId, token) VALUES (?, ?);", [
         userId,
         token,

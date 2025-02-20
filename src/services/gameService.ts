@@ -1,4 +1,4 @@
-import { getGamesBySearch } from "../igdb";
+import { getGamesBySearch } from "../igdb/index.js";
 
 export class GameService {
   async searchGame(query: string) {

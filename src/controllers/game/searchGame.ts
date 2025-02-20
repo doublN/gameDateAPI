@@ -1,18 +1,13 @@
-import yup from "yup";
 import { Request, Response } from "express";
-import { GameService } from "../../services/gameService";
+import { GameService } from "../../services/gameService.js";
 import { handleError } from "../../utils/error.js";
 
 export class SearchGameController {
   async invoke(req: Request, res: Response) {
-    const validation = yup.string().required();
-
     try {
-      const query = await validation.validate(req.params.query);
-
       const gameService = new GameService();
 
-      const games = await gameService.searchGame(query);
+      const games = await gameService.searchGame(req.params.query);
 
       res.json(games);
     } catch (error) {

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { object, string } from "yup";
-import { handleError } from "../../utils/error";
-import { UserService } from "../../services/userService";
+import { handleError } from "../../utils/error.js";
+import { UserService } from "../../services/userService.js";
 
 export class DeleteUserController {
   async invoke(req: Request, res: Response) {

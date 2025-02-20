@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { SearchGameController } from "../controllers/game/searchGame";
+import { SearchGameController } from "../controllers/game/searchGame.js";
 
 export const gameRouter = Router();
 
