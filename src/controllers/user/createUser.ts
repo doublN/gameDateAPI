@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { UserFactory } from "../../factories/user.js";
-import { UserModel } from "../../models/user.js";
 import { object, string } from "yup";
 import { handleError } from "../../utils/error.js";
 
@@ -25,13 +24,12 @@ export class CreateUserController {
         abortEarly: false,
       });
 
-      const newUser = await userFactory.createUser(request);
+      const user = await userFactory.createUser(request);
 
-      if (newUser instanceof UserModel) {
-        res.json({
-          success: true,
-        });
-      }
+      res.json({
+        success: true,
+        user,
+      });
     } catch (error) {
       const response = handleError(error);
       res.status(400);

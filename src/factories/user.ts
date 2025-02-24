@@ -1,5 +1,5 @@
 import { query } from "../db/db.js";
-import { User, UserModel } from "../models/user.js";
+import { User } from "../models/user.js";
 import { UserRepository } from "../repositories/user.js";
 import argon2 from "argon2";
 
@@ -10,7 +10,7 @@ export type UserFactoryType = Pick<User, "username" | "email"> & {
 export class UserFactory {
   private readonly userRepository = new UserRepository();
 
-  async createUser(data: UserFactoryType): Promise<UserModel | null> {
+  async createUser(data: UserFactoryType): Promise<User | null> {
     const hash = await argon2.hash(data.password);
 
     await query(
@@ -18,12 +18,6 @@ export class UserFactory {
       [data.username, data.email, hash]
     );
 
-    const user = await this.userRepository.findByEmail(data.email);
-
-    if (user !== null) {
-      return user;
-    }
-
-    return null;
+    return await this.userRepository.findByEmail(data.email);
   }
 }

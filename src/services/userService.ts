@@ -1,6 +1,5 @@
 import { query } from "../db/db.js";
 import { SessionFactory } from "../factories/session.js";
-import { SessionModel } from "../models/session.js";
 import { UserRepository } from "../repositories/user.js";
 import argon2 from "argon2";
 
@@ -15,16 +14,16 @@ export class UserService {
       throw new Error("Cannot find user");
     }
 
-    const isVerified = await argon2.verify(user.user.hashedPassword, password);
+    const isVerified = await argon2.verify(user.hashedPassword, password);
 
     if (!isVerified) {
       throw new Error("Incorrect password");
     }
 
-    const newSession = await this.sessionFactory.createSession(user.user.id);
+    const newSession = await this.sessionFactory.createSession(user.id);
 
-    if (newSession instanceof SessionModel) {
-      return newSession.session.token;
+    if (newSession !== null) {
+      return newSession.token;
     }
 
     throw new Error("Could not create session");
@@ -37,7 +36,7 @@ export class UserService {
       throw new Error("Cannot find user");
     }
 
-    const isVerified = await argon2.verify(user.user.hashedPassword, password);
+    const isVerified = await argon2.verify(user.hashedPassword, password);
 
     if (!isVerified) {
       throw new Error("Incorrect password");

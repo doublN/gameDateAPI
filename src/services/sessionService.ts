@@ -12,7 +12,7 @@ export class SessionService {
       return false;
     }
 
-    if (timeDifference(new Date(), session.session.createdAt, "days") > 30) {
+    if (timeDifference(new Date(), session.createdAt, "days") > 30) {
       return false;
     }
 

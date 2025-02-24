@@ -25,7 +25,7 @@ connection.connect();
 
 export const query = async (
   queryString: string,
-  params: Array<string | number> = []
+  params: Array<string | number | null> = []
 ) => {
   const [result, fields] = await connection.query(queryString, params);
   return [result, fields];

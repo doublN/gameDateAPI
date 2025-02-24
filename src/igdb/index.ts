@@ -1,17 +1,9 @@
+import { Game } from "../models/game.js";
+
 type IgdbCredentials = {
   access_token: string;
   expires_in: number;
   token_type: string;
-};
-
-type GameType = {
-  id: number;
-  cover: {
-    id: number;
-    url: string;
-  };
-  first_release_date: number;
-  name: string;
 };
 
 export const credentials: IgdbCredentials = {
@@ -47,5 +39,26 @@ export const getGamesBySearch = async (query: string) => {
     body: `search "${query}"; fields name,first_release_date,cover.url; limit 10;`,
   });
 
-  return (await response.json()) as Array<GameType>;
+  return (await response.json()) as Array<Game>;
+};
+
+export const getGameById = async (id: number): Promise<Game> => {
+  const clientId = process.env.IGDB_CLIENT_ID ?? "";
+  const response = await fetch("https://api.igdb.com/v4/games", {
+    method: "post",
+    headers: {
+      Accept: "application/json",
+      "Client-ID": clientId,
+      Authorization: `Bearer ${credentials.access_token}`,
+    },
+    body: `where id = ${id}; fields name,first_release_date,cover.url; limit 10;`,
+  });
+
+  const data = await response.json();
+
+  if (!Array.isArray(data) || data.length === 0) {
+    throw new Error("No game found");
+  }
+
+  return data[0] as Game;
 };

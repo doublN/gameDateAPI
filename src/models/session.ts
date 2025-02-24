@@ -3,11 +3,3 @@ export type Session = {
   token: string;
   createdAt: Date;
 };
-
-export class SessionModel {
-  session: Session;
-
-  constructor(session: Session) {
-    this.session = session;
-  }
-}
