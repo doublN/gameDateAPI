@@ -24,8 +24,9 @@ export const checkSession = async (
 
     if (!isSessionActive) {
       res.status(401).end();
-      sessionService.deleteSession(bearer);
+      await sessionService.deleteSession(bearer);
     } else {
+      await sessionService.setSignedInUserByToken(bearer);
       next();
     }
   } catch (error) {
