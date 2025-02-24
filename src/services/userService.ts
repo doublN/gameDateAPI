@@ -1,5 +1,6 @@
 import { query } from "../db/db.js";
 import { SessionFactory } from "../factories/session.js";
+import { signedInUser } from "../global.js";
 import { UserRepository } from "../repositories/user.js";
 import argon2 from "argon2";
 
@@ -23,6 +24,8 @@ export class UserService {
     const newSession = await this.sessionFactory.createSession(user.id);
 
     if (newSession !== null) {
+      signedInUser.email = email;
+      signedInUser.id = newSession.userId;
       return newSession.token;
     }
 

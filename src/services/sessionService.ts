@@ -1,4 +1,5 @@
 import { query } from "../db/db.js";
+import { signedInUser } from "../global.js";
 import { SessionRepository } from "../repositories/session.js";
 import { timeDifference } from "../utils/date.js";
 
@@ -17,6 +18,23 @@ export class SessionService {
     }
 
     return true;
+  }
+
+  async setSignedInUserByToken(token: string) {
+    if (signedInUser.id === null || signedInUser.email === null) {
+      const sessionWithUser = await this.sessionRepository.findByTokenJoin(
+        token
+      );
+
+      if (sessionWithUser) {
+        signedInUser.email = sessionWithUser.email;
+        signedInUser.id = sessionWithUser.userId;
+        console.log(signedInUser, "sessionService");
+        return;
+      }
+
+      throw new Error("Cannot set user");
+    }
   }
 
   async deleteSession(token: string): Promise<boolean> {
