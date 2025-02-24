@@ -1,6 +1,11 @@
+import { query } from "../db/db.js";
 import { getGamesBySearch } from "../igdb/index.js";
+import { Game } from "../models/game.js";
+import { CoverService } from "./coverService.js";
 
 export class GameService {
+  coverService = new CoverService();
+
   async searchGame(query: string) {
     const games = await getGamesBySearch(query);
 
@@ -13,5 +18,12 @@ export class GameService {
         },
       };
     });
+  }
+
+  async addGameToDB(game: Game) {
+    await query(
+      "INSERT IGNORE INTO games (id, firstReleaseDate, cover, name) VALUES (?, ?, ?, ?)",
+      [game.id, game.first_release_date, game?.cover?.id ?? null, game.name]
+    );
   }
 }
