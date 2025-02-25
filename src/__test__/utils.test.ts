@@ -4,12 +4,7 @@ import { IncomingHttpHeaders } from "http";
 import { getBearer } from "../utils/headers.js";
 import { object, string } from "yup";
 import { handleError } from "../utils/error.js";
-import { connection, query } from "../db/db.js";
 import { testSeed } from "../db/testSeed.js";
-
-afterAll(async () => {
-  await connection.end();
-});
 
 describe("Date - timeDifference", () => {
   const date1 = new Date(1739577600000);

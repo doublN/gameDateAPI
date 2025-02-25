@@ -1,15 +1,11 @@
 import request from "supertest";
 import { describe, expect, test } from "@jest/globals";
-import { connection, query } from "../../db/db";
+import { query } from "../../db/db";
 import { testSeed } from "../../db/testSeed";
 import { app } from "../..";
 
 beforeAll(async () => {
   await testSeed();
-});
-
-afterAll(async () => {
-  await connection.end();
 });
 
 describe("POST /create", () => {
