@@ -1,6 +1,5 @@
 import request from "supertest";
 import { describe, expect, test } from "@jest/globals";
-import { connection } from "../../db/db";
 import { testSeed } from "../../db/testSeed";
 import { app } from "../..";
 import { fetchCredentials } from "../../igdb";
@@ -8,10 +7,6 @@ import { fetchCredentials } from "../../igdb";
 beforeAll(async () => {
   await testSeed();
   await fetchCredentials();
-});
-
-afterAll(async () => {
-  await connection.end();
 });
 
 describe("GET /games/search/:query", () => {
@@ -34,5 +29,17 @@ describe("GET /games/search/:query", () => {
         name: "Avowed",
       });
     }
+  });
+});
+
+describe("POST /games/add", () => {
+  test("responds success when adding game to list", async () => {
+    const response = await request(app)
+      .post("/game/add")
+      .set("authorization", "bearer testtoken1")
+      .send({ gameId: 135994 })
+      .expect(200);
+
+    expect(response.body).toMatchObject({ success: true });
   });
 });
