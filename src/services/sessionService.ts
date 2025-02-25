@@ -29,7 +29,6 @@ export class SessionService {
       if (sessionWithUser) {
         signedInUser.email = sessionWithUser.email;
         signedInUser.id = sessionWithUser.userId;
-        console.log(signedInUser, "sessionService");
         return;
       }
 
