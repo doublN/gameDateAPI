@@ -14,7 +14,7 @@ export class AddGameController {
 
       const listService = new ListService();
 
-      listService.addGameToList(gameId);
+      await listService.addGameToList(gameId);
 
       res.json({ success: true });
     } catch (error) {
