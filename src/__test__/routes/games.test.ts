@@ -42,4 +42,8 @@ describe("POST /games/add", () => {
 
     expect(response.body).toMatchObject({ success: true });
   });
+
+  test("response with 401 status code when authorization is not set", async () => {
+    await request(app).post("/game/add").send({ gameId: 135994 }).expect(401);
+  });
 });
