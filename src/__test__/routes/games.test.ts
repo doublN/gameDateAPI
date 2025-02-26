@@ -30,6 +30,15 @@ describe("GET /games/search/:query", () => {
       });
     }
   });
+
+  test("responds with empty array for unknown search", async () => {
+    const response = await request(app)
+      .get("/game/search/aerafdgw")
+      .expect(200);
+
+    expect(Array.isArray(response.body));
+    expect(response.body.length).toBe(0);
+  });
 });
 
 describe("POST /games/add", () => {
