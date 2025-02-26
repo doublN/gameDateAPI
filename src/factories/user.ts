@@ -10,7 +10,7 @@ export type UserFactoryType = Pick<User, "username" | "email"> & {
 export class UserFactory {
   private readonly userRepository = new UserRepository();
 
-  async createUser(data: UserFactoryType): Promise<User | null> {
+  async createUser(data: UserFactoryType) {
     const hash = await argon2.hash(data.password);
 
     await query(
@@ -18,6 +18,6 @@ export class UserFactory {
       [data.username, data.email, hash]
     );
 
-    return await this.userRepository.findByEmail(data.email);
+    await this.userRepository.findByEmail(data.email);
   }
 }
