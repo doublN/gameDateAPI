@@ -46,4 +46,16 @@ describe("POST /games/add", () => {
   test("response with 401 status code when authorization is not set", async () => {
     await request(app).post("/game/add").send({ gameId: 135994 }).expect(401);
   });
+
+  test("responds with error message when gameId is missing", async () => {
+    const response = await request(app)
+      .post("/game/add")
+      .set("authorization", "bearer testtoken1")
+      .expect(400);
+
+    expect(response.body).toMatchObject({
+      success: false,
+      errors: ["gameId is a required field"],
+    });
+  });
 });
