@@ -5,6 +5,7 @@ import { getBearer } from "../utils/headers.js";
 import { object, string } from "yup";
 import { handleError } from "../utils/error.js";
 import { testSeed } from "../db/testSeed.js";
+import { query } from "../db/db.js";
 
 describe("Date - timeDifference", () => {
   const date1 = new Date(1739577600000);
