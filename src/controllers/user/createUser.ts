@@ -24,11 +24,10 @@ export class CreateUserController {
         abortEarly: false,
       });
 
-      const user = await userFactory.createUser(request);
+      await userFactory.createUser(request);
 
       res.json({
         success: true,
-        user,
       });
     } catch (error) {
       const response = handleError(error);
