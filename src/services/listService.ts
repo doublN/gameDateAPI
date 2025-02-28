@@ -35,6 +35,17 @@ export class ListService {
     ]);
   }
 
+  async removeGameFromList(gameId: number) {
+    if (!signedInUser.id) {
+      throw new Error("User not set");
+    }
+
+    await query(`DELETE FROM list WHERE gameId = ? AND userId = ?`, [
+      gameId,
+      signedInUser.id,
+    ]);
+  }
+
   async getGameList(userId: number): Promise<Array<GameListGame>> {
     const [games] = (await query(
       "SELECT games.id, games.firstReleaseDate, games.name, covers.url as cover FROM list INNER JOIN games ON list.gameId = games.id INNER JOIN covers ON covers.id = games.cover WHERE list.userId = ? ORDER BY games.firstReleaseDate ASC",
