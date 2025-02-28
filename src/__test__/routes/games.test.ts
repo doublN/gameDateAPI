@@ -9,7 +9,7 @@ beforeAll(async () => {
   await fetchCredentials();
 });
 
-describe("GET /games/search/:query", () => {
+describe("GET /game/search/:query", () => {
   test("responds with an array", async () => {
     const response = await request(app).get("/game/search/avowed").expect(200);
     expect(Array.isArray(response.body) && response.body.length > 0).toBe(true);
@@ -41,7 +41,7 @@ describe("GET /games/search/:query", () => {
   });
 });
 
-describe("POST /games/add", () => {
+describe("POST /game/add", () => {
   test("responds success when adding game to list", async () => {
     const response = await request(app)
       .post("/game/add")
@@ -69,7 +69,7 @@ describe("POST /games/add", () => {
   });
 });
 
-describe("GET /list", () => {
+describe("GET game/list", () => {
   test("responds with list of games associated with logged-in user", async () => {
     const response = await request(app)
       .get("/game/list")
@@ -86,7 +86,7 @@ describe("GET /list", () => {
   });
 
   test("response with 401 status code when authorization is not set", async () => {
-    await request(app).post("/game/add").send({ gameId: 135994 }).expect(401);
+    await request(app).get("/game/list").send({ gameId: 135994 }).expect(401);
   });
 
   test("responds with empty array if user has not added any games", async () => {
@@ -97,5 +97,36 @@ describe("GET /list", () => {
 
     expect(Array.isArray(response.body)).toBe(true);
     expect(response.body.length).toBe(0);
+  });
+});
+
+describe("DELETE game/remove", () => {
+  test("responds with success when game is removed from the list", async () => {
+    const response = await request(app)
+      .delete("/game/remove")
+      .set("authorization", "bearer testtoken1")
+      .send({ gameId: 135994 })
+      .expect(200);
+
+    expect(response.body).toMatchObject({ success: true });
+  });
+
+  test("response with 401 status code when authorization is not set", async () => {
+    await request(app)
+      .delete("/game/remove")
+      .send({ gameId: 135994 })
+      .expect(401);
+  });
+
+  test("responds with error message when gameId is missing", async () => {
+    const response = await request(app)
+      .delete("/game/remove")
+      .set("authorization", "bearer testtoken1")
+      .expect(400);
+
+    expect(response.body).toMatchObject({
+      success: false,
+      errors: ["gameId is a required field"],
+    });
   });
 });
