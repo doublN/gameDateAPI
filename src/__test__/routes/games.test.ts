@@ -68,3 +68,34 @@ describe("POST /games/add", () => {
     });
   });
 });
+
+describe("GET /list", () => {
+  test("responds with list of games associated with logged-in user", async () => {
+    const response = await request(app)
+      .get("/game/list")
+      .set("authorization", "bearer testtoken1")
+      .expect(200);
+
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body[0]).toMatchObject({
+      id: 135994,
+      firstReleaseDate: 1739836800000,
+      cover: "//images.igdb.com/igdb/image/upload/t_cover_big/co7nbb.jpg",
+      name: "Avowed",
+    });
+  });
+
+  test("response with 401 status code when authorization is not set", async () => {
+    await request(app).post("/game/add").send({ gameId: 135994 }).expect(401);
+  });
+
+  test("responds with empty array if user has not added any games", async () => {
+    const response = await request(app)
+      .get("/game/list")
+      .set("authorization", "bearer testtoken2")
+      .expect(200);
+
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBe(0);
+  });
+});
