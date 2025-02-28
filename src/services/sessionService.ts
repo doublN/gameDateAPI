@@ -21,7 +21,7 @@ export class SessionService {
   }
 
   async setSignedInUserByToken(token: string) {
-    if (signedInUser.id === null || signedInUser.email === null) {
+    if (signedInUser.token === null || signedInUser.token !== token) {
       const sessionWithUser = await this.sessionRepository.findByTokenJoin(
         token
       );
@@ -29,6 +29,7 @@ export class SessionService {
       if (sessionWithUser) {
         signedInUser.email = sessionWithUser.email;
         signedInUser.id = sessionWithUser.userId;
+        signedInUser.token = token;
         return;
       }
 
