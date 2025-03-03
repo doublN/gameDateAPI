@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import express, { Express } from "express";
-
+import { CronJob } from "cron";
 import { userRouter } from "./routes/user.js";
 import { fetchCredentials } from "./igdb/index.js";
 import { gameRouter } from "./routes/game.js";
@@ -26,3 +26,11 @@ if (process.env.NODE_ENV !== "test") {
     }
   });
 }
+
+const updateCredentials = new CronJob(
+  "0 0 1 * *",
+  fetchCredentials,
+  null,
+  true,
+  "Europe/London"
+);
